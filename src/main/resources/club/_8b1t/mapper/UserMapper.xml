@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club._8b1t.mapper.UserMapper">
+
+    <!-- 定义结果映射 -->
+    <resultMap id="UserResultMap" type="club._8b1t.pojo.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+        <result property="name" column="name"/>
+        <result property="role" column="role" typeHandler="club._8b1t.handler.RoleTypeHandler"/>
+        <result property="status" column="status" typeHandler="club._8b1t.handler.StatusTypeHandler"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+
+    <select id="getAllUsers" resultMap="UserResultMap">
+        SELECT * FROM users WHERE is_deleted = 0;
+    </select>
+
+    <select id="getByUsernameAndPassword" resultMap="UserResultMap">
+        SELECT * FROM users
+        WHERE
+        username = #{username} AND
+        password = #{password} AND
+        is_deleted = 0;
+    </select>
+
+    <insert id="addUser" parameterType="club._8b1t.pojo.User">
+        INSERT INTO users
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            username,
+            password,
+            email,
+            <if test="role != null">role,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{username},
+            #{password},
+            #{email},
+            <if test="role != null">#{role},</if>
+        </trim>
+    </insert>
+
+</mapper>
