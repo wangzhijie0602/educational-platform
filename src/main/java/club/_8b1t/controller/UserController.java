@@ -1,7 +1,6 @@
 package club._8b1t.controller;
 
 import club._8b1t.pojo.Result;
-import club._8b1t.pojo.User;
 import club._8b1t.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +21,4 @@ public class UserController {
     public Result getAllUsers() {
         return Result.success(userService.getAllUsers());
     }
-
-    @PostMapping("/register")
-    public Result userRegister(@RequestBody User user) {
-        return userService.addUser(user) ? Result.success() : Result.error("注册失败!");
-    }
-
 }

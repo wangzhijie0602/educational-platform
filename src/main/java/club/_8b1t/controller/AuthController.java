@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author 8bit
  */
-@RestController
+@RestController("/user")
 @Slf4j
-public class LoginController {
+public class AuthController {
 
     @Autowired
     private  UserService userService;
@@ -32,6 +32,12 @@ public class LoginController {
         }
 
         return Result.error("用户名或密码错误");
+    }
+
+    @PostMapping("/register")
+    public Result userRegister(@RequestBody User user) {
+        log.info("用户注册: {}", user);
+        return userService.addUser(user) ? Result.success() : Result.error("注册失败!");
     }
 
 }
