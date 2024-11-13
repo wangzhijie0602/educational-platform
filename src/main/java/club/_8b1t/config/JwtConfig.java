@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * @author 8bit
  */
-@Configuration
+//@Configuration
 public class JwtConfig implements WebMvcConfigurer {
 
     @Autowired

@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static club._8b1t.pojo.User.Status.ACTIVE;
-
 /**
  * @author 8bit
  */
@@ -47,5 +45,14 @@ public class UserServiceImpl implements UserService {
     public User login(User user) {
         return userMapper.getByUsernameAndPassword(user);
     }
+
+    @Override
+    public User getUserByUsername(String username) {
+        if (username == null || username.isEmpty()) {
+            return null;
+        }
+        return userMapper.getUserByUsername(username);
+    }
+
 
 }

@@ -14,4 +14,6 @@ public interface UserService {
     boolean addUser(User user);
 
     User login(User user);
+
+    User getUserByUsername(String username);
 }

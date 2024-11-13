@@ -3,22 +3,22 @@ package club._8b1t.controller;
 import club._8b1t.pojo.Result;
 import club._8b1t.pojo.User;
 import club._8b1t.service.UserService;
-import club._8b1t.utils.JwtUtils;
+import club._8b1t.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 8bit
  */
-@RestController("/user")
 @Slf4j
+@RestController
+@RequestMapping("/user")
 public class AuthController {
 
     @Autowired
-    private  UserService userService;
+    private UserService userService;
 
     @PostMapping("/login")
     public Result userLogin(@RequestBody User user) {
@@ -27,7 +27,7 @@ public class AuthController {
 
 //        用户登录成功,生成并下发令牌
         if (u != null) {
-            String jwt = JwtUtils.generateToken(u.getUsername());
+            String jwt = JwtUtil.generateToken(u.getUsername());
             return Result.success(jwt);
         }
 

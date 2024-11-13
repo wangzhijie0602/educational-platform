@@ -16,4 +16,6 @@ public interface UserMapper {
 
     User getByUsernameAndPassword(User user);
 
+    User getUserByUsername(String username);
+
 }
