@@ -48,7 +48,7 @@
     </select>
 
     <select id="getUserByUsername" resultMap="UserResultMap">
-        SELECT * FROM user WHERE username = #{username} AND is_deleted = 0;
+        SELECT * FROM users WHERE username = #{username} AND is_deleted = 0;
     </select>
 
 </mapper>

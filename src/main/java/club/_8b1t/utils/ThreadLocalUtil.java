@@ -7,8 +7,8 @@ public class ThreadLocalUtil {
 
     private static final ThreadLocal<String> THREAD_LOCAL = new ThreadLocal<>();
 
-    public static void setToken(String token) {
-        THREAD_LOCAL.set(token);
+    public static void setToken(String username) {
+        THREAD_LOCAL.set(username);
     }
 
     public static String getToken() {
