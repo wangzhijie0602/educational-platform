@@ -15,7 +15,7 @@ public interface UserMapper {
 
     List<User> getAllUsers();
 
-    boolean addUser(User user);
+    boolean insertUser(User user);
 
     User getByUsernameAndPassword(User user);
 

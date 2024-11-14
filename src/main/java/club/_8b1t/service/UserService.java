@@ -14,7 +14,7 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    boolean addUser(User user);
+    boolean register(User user);
 
     User login(User user);
 

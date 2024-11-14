@@ -4,9 +4,9 @@ import club._8b1t.mapper.UserMapper;
 import club._8b1t.pojo.User;
 import club._8b1t.pojo.UserInfoRequest;
 import club._8b1t.service.UserService;
+import club._8b1t.utils.UserValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 /**
@@ -25,25 +25,27 @@ public class UserServiceImpl implements UserService {
         return userMapper.getAllUsers();
     }
 
+    /**
+     * 注册用户
+     *
+     * @param user 用户的信息,包含username,password,email
+     * @return 注册是否成功
+     * */
     @Override
-    public boolean addUser(User user) {
-//        判空,这三项不能为空
-        if (user.getUsername() == null ||
-                user.getPassword() == null ||
-                user.getEmail() == null
-        ) {
-            return false;
-        }
-//        用户名或密码过长
-        if (user.getUsername().length() > 50 ||
-                user.getPassword().length() < 8 ||
-                user.getPassword().length() > 255
-        ) {
-            return false;
-        }
-        return userMapper.addUser(user);
+    public boolean register(User user) {
+        return UserValidatorUtil.validateUserBasicInfo(user)
+//                判断用户是否已经注册
+                && userMapper.getUserByUsername(user.getUsername()) == null
+//                真正注册的方法,前面全部为true才会执行
+                && userMapper.insertUser(user);
     }
 
+    /**
+     * 用户登录
+     *
+     * @param user 用户的信息,包含username,password
+     * @return 判断登录
+     * */
     @Override
     public User login(User user) {
         return userMapper.getByUsernameAndPassword(user);
@@ -56,6 +58,5 @@ public class UserServiceImpl implements UserService {
         }
         return userMapper.getUserByUsername(username);
     }
-
 
 }

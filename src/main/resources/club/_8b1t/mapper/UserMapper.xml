@@ -25,7 +25,7 @@
         SELECT * FROM users WHERE is_deleted = 0;
     </select>
 
-    <insert id="addUser" parameterType="club._8b1t.pojo.User">
+    <insert id="insertUser" parameterType="club._8b1t.pojo.User">
         INSERT INTO users
         <trim prefix="(" suffix=")" suffixOverrides=",">
             username,

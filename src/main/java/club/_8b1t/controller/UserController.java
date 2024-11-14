@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * 对用户各种操作的api接口实现
+ *
  * @author 8bit
  * @version 1.0
  * @since 1.0

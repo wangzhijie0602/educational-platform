@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * 用户登录和注册的接口实现
+ *
  * @author 8bit
  * @version 1.0
  * @since 1.0
@@ -37,7 +39,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResultUtil userRegister(@RequestBody User user) {
         log.info("用户注册: {}", user);
-        return userService.addUser(user) ? ResultUtil.success() : ResultUtil.error("注册失败!");
+        return userService.register(user) ? ResultUtil.success() : ResultUtil.error("注册失败!");
     }
 
 }
