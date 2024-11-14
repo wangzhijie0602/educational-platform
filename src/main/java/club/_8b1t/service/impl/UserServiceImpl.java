@@ -2,11 +2,11 @@ package club._8b1t.service.impl;
 
 import club._8b1t.mapper.UserMapper;
 import club._8b1t.pojo.User;
-import club._8b1t.pojo.UserInfoRequest;
 import club._8b1t.service.UserService;
-import club._8b1t.utils.UserValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import java.util.List;
 
 /**
@@ -32,27 +32,20 @@ public class UserServiceImpl implements UserService {
      * @return 注册是否成功
      * */
     @Override
-    public boolean register(User user) {
-        return UserValidatorUtil.validateUserBasicInfo(user)
-//                判断用户是否已经注册
-                && userMapper.getUserByUsername(user.getUsername()) == null
+    public boolean register(@Validated User user) {
+        return userMapper.getUserByUsername(user.getUsername()) == null
 //                真正注册的方法,前面全部为true才会执行
                 && userMapper.insertUser(user);
     }
 
     /**
-     * 用户登录
+     * 根据用户名查找用户
      *
-     * @param user 用户的信息,包含username,password
-     * @return 判断登录
-     * */
+     * @param username 用户名
+     * @return 如果用户存在,返回用户实体,不存在返回null
+     */
     @Override
-    public User login(User user) {
-        return userMapper.getByUsernameAndPassword(user);
-    }
-
-    @Override
-    public UserInfoRequest getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         if (username == null || username.isEmpty()) {
             return null;
         }

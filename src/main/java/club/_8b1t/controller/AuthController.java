@@ -1,10 +1,12 @@
 package club._8b1t.controller;
 
-import club._8b1t.utils.ResultUtil;
+import club._8b1t.pojo.Result;
 import club._8b1t.pojo.User;
 import club._8b1t.service.UserService;
-import club._8b1t.utils.JwtUtil;
+import club._8b1t.utils.JwtUtils;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -15,27 +17,31 @@ import org.springframework.web.bind.annotation.*;
  * @since 1.0
  */
 @RestController
+@RequestMapping("/user")
 public class AuthController {
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private UserService userService;
 
     @PostMapping("/login")
-    public ResultUtil userLogin(@RequestBody User user) {
-        User u = userService.login(user);
-
-//        用户登录成功,生成并下发令牌
-        if (u != null) {
-            String jwt = JwtUtil.generateToken(u.getUsername());
-            return ResultUtil.success(jwt);
+    public Result login(@NotNull String username, @NotNull String password) {
+        User user = userService.getUserByUsername(username);
+        if (user == null || !bCryptPasswordEncoder.matches(password, user.getPassword())) {
+            return Result.error("用户名或密码错误");
         }
 
-        return ResultUtil.error("用户名或密码错误");
+//        用户登录成功,生成并下发令牌
+        String jwt = JwtUtils.generateToken(user.getUsername());
+        return Result.success(jwt);
+
     }
 
     @PostMapping("/register")
-    public ResultUtil userRegister(@RequestBody User user) {
-        return userService.register(user) ? ResultUtil.success() : ResultUtil.error("注册失败!");
+    public Result register(String username, String password, String email) {
+        return userService.register(new User(username, bCryptPasswordEncoder.encode(password), email)) ? Result.success() : Result.error("注册失败!");
     }
 
 }

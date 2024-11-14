@@ -1,7 +1,6 @@
 package club._8b1t.mapper;
 
 import club._8b1t.pojo.User;
-import club._8b1t.pojo.UserInfoRequest;
 import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
@@ -17,8 +16,6 @@ public interface UserMapper {
 
     boolean insertUser(User user);
 
-    User getByUsernameAndPassword(User user);
-
-    UserInfoRequest getUserByUsername(String username);
+    User getUserByUsername(String username);
 
 }
