@@ -1,6 +1,7 @@
 package club._8b1t.service;
 
 import club._8b1t.pojo.User;
+import club._8b1t.pojo.UserInfoRequest;
 
 import java.util.List;
 
@@ -15,5 +16,5 @@ public interface UserService {
 
     User login(User user);
 
-    User getUserByUsername(String username);
+    UserInfoRequest getUserByUsername(String username);
 }

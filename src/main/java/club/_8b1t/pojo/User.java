@@ -1,6 +1,5 @@
 package club._8b1t.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,10 +34,6 @@ public class User {
         ACTIVE, INACTIVE, SUSPENDED
     }
 
-    public User(String username, String password, String email, Role role) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.role = role;
-    }
 }
+
+

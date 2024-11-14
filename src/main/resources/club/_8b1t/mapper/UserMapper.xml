@@ -18,6 +18,10 @@
         <result property="isDeleted" column="is_deleted"/>
     </resultMap>
 
+    <resultMap id="UserInfoRequestResultMap" type="club._8b1t.pojo.UserInfoRequest" extends="UserResultMap">
+
+    </resultMap>
+
     <select id="getAllUsers" resultMap="UserResultMap">
         SELECT * FROM users WHERE is_deleted = 0;
     </select>
@@ -47,7 +51,7 @@
         is_deleted = 0;
     </select>
 
-    <select id="getUserByUsername" resultMap="UserResultMap">
+    <select id="getUserByUsername" resultMap="UserInfoRequestResultMap">
         SELECT * FROM users WHERE username = #{username} AND is_deleted = 0;
     </select>
 
