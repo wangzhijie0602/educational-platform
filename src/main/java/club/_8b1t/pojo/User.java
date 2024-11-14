@@ -8,8 +8,9 @@ import java.time.LocalDateTime;
 
 /**
  * @author 8bit
+ * @version 1.0
+ * @since 1.0
  */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

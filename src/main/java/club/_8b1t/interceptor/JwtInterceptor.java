@@ -9,6 +9,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
  * @author 8bit
+ * @version 1.0
+ * @since 1.0
  */
 @Component
 public class JwtInterceptor implements HandlerInterceptor {

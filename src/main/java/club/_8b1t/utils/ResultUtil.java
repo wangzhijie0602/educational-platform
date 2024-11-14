@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author 8bit
+ * @version 1.0
+ * @since 1.0
  */
 @Data
 @NoArgsConstructor

@@ -2,6 +2,8 @@ package club._8b1t.utils;
 
 /**
  * @author 8bit
+ * @version 1.0
+ * @since 1.0
  */
 public class ThreadLocalUtil {
 

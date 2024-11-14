@@ -19,7 +19,6 @@
     </resultMap>
 
     <resultMap id="UserInfoRequestResultMap" type="club._8b1t.pojo.UserInfoRequest" extends="UserResultMap">
-
     </resultMap>
 
     <select id="getAllUsers" resultMap="UserResultMap">

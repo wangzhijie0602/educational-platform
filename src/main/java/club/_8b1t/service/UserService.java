@@ -7,6 +7,8 @@ import java.util.List;
 
 /**
  * @author 8bit
+ * @version 1.0
+ * @since 1.0
  */
 public interface UserService {
 

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 8bit
+ * @version 1.0
+ * @since 1.0
  */
 @Slf4j
 @RestController
