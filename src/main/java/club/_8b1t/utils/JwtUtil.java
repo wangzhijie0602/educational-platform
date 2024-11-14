@@ -14,7 +14,7 @@ import java.util.function.Function;
 /**
  * @author 8bit
  */
-public class JwtUtils {
+public class JwtUtil {
 
     // 使用Keys.secretKeyFor生成一个安全的密钥
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);

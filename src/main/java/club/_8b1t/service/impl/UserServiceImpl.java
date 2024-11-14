@@ -2,13 +2,12 @@ package club._8b1t.service.impl;
 
 import club._8b1t.mapper.UserMapper;
 import club._8b1t.pojo.User;
+import club._8b1t.pojo.UserInfoRequest;
 import club._8b1t.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static club._8b1t.pojo.User.Status.ACTIVE;
 
 /**
  * @author 8bit
@@ -47,5 +46,14 @@ public class UserServiceImpl implements UserService {
     public User login(User user) {
         return userMapper.getByUsernameAndPassword(user);
     }
+
+    @Override
+    public UserInfoRequest getUserByUsername(String username) {
+        if (username == null || username.isEmpty()) {
+            return null;
+        }
+        return userMapper.getUserByUsername(username);
+    }
+
 
 }

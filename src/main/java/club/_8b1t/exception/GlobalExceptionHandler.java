@@ -1,6 +1,6 @@
 package club._8b1t.exception;
 
-import club._8b1t.pojo.Result;
+import club._8b1t.utils.ResultUtil;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -20,8 +20,8 @@ public class GlobalExceptionHandler {
      * @return 包含异常信息的 JSON 响应
      */
     @ExceptionHandler(Exception.class)
-    public Result handleException(Exception e) {
+    public ResultUtil handleException(Exception e) {
         e.printStackTrace();
-        return Result.error("");
+        return ResultUtil.error("");
     }
 }

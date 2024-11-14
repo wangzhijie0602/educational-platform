@@ -18,16 +18,12 @@
         <result property="isDeleted" column="is_deleted"/>
     </resultMap>
 
+    <resultMap id="UserInfoRequestResultMap" type="club._8b1t.pojo.UserInfoRequest" extends="UserResultMap">
+
+    </resultMap>
+
     <select id="getAllUsers" resultMap="UserResultMap">
         SELECT * FROM users WHERE is_deleted = 0;
-    </select>
-
-    <select id="getByUsernameAndPassword" resultMap="UserResultMap">
-        SELECT * FROM users
-        WHERE
-        username = #{username} AND
-        password = #{password} AND
-        is_deleted = 0;
     </select>
 
     <insert id="addUser" parameterType="club._8b1t.pojo.User">
@@ -46,5 +42,17 @@
             <if test="role != null">#{role},</if>
         </trim>
     </insert>
+
+    <select id="getByUsernameAndPassword" resultMap="UserResultMap">
+        SELECT * FROM users
+        WHERE
+        username = #{username} AND
+        password = #{password} AND
+        is_deleted = 0;
+    </select>
+
+    <select id="getUserByUsername" resultMap="UserInfoRequestResultMap">
+        SELECT * FROM users WHERE username = #{username} AND is_deleted = 0;
+    </select>
 
 </mapper>
