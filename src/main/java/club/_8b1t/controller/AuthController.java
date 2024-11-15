@@ -7,7 +7,6 @@ import club._8b1t.utils.JwtUtils;
 import club._8b1t.utils.PasswordEncoderUtils;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
