@@ -3,6 +3,7 @@ package club._8b1t.controller;
 import club._8b1t.pojo.Result;
 import club._8b1t.service.UserService;
 import club._8b1t.utils.ThreadLocalUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +18,10 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("/users")
     public Result getAllUsers() {

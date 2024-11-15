@@ -1,5 +1,6 @@
 package club._8b1t.utils;
 
+import club._8b1t.pojo.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,8 +13,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
+ * 生成用户token的工具类
+ *
  * @author 8bit
- * @version 1.0
+ * @version 1.1
  * @since 1.0
  */
 public class JwtUtils {
@@ -22,16 +25,21 @@ public class JwtUtils {
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     // 生成JWT令牌
-    public static String generateToken(String username) {
+    public static String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+        claims.put("id", user.getId());
+        claims.put("username", user.getUsername());
+        claims.put("email", user.getEmail());
+        claims.put("name", user.getName());
+        claims.put("role", user.getRole().name());
+        claims.put("status", user.getStatus().name());
+        return createToken(claims);
     }
 
     // 创建JWT令牌
-    private static String createToken(Map<String, Object> claims, String subject) {
+    private static String createToken(Map<String, Object> claims) {
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
@@ -46,7 +54,7 @@ public class JwtUtils {
 
     // 提取用户名
     public static String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        return (String) extractAllClaims(token).get("username");
     }
 
     // 提取过期时间
@@ -72,5 +80,18 @@ public class JwtUtils {
     // 检查令牌是否过期
     private static Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
+    }
+
+    // 提取User对象
+    public static User extractUser(String token) {
+        Claims claims = extractAllClaims(token);
+        User user = new User();
+        user.setId(((Number) claims.get("id")).longValue());
+        user.setUsername((String) claims.get("username"));
+        user.setEmail((String) claims.get("email"));
+        user.setName((String) claims.get("name"));
+        user.setRole(User.Role.valueOf((String) claims.get("role")));
+        user.setStatus(User.Status.valueOf((String) claims.get("status")));
+        return user;
     }
 }

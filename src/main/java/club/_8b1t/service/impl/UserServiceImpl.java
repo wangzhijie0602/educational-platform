@@ -3,6 +3,7 @@ package club._8b1t.service.impl;
 import club._8b1t.mapper.UserMapper;
 import club._8b1t.pojo.User;
 import club._8b1t.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -15,10 +16,11 @@ import java.util.List;
  * @since 1.0
  */
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserMapper userMapper;
+
+    private final UserMapper userMapper;
 
     @Override
     public List<User> getAllUsers() {

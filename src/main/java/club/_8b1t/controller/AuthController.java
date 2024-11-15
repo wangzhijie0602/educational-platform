@@ -5,7 +5,7 @@ import club._8b1t.pojo.User;
 import club._8b1t.service.UserService;
 import club._8b1t.utils.JwtUtils;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,13 +18,11 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    private UserService userService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserService userService;
 
     @PostMapping("/login")
     public Result login(@NotNull String username, @NotNull String password) {
@@ -34,7 +32,7 @@ public class AuthController {
         }
 
 //        用户登录成功,生成并下发令牌
-        String jwt = JwtUtils.generateToken(user.getUsername());
+        String jwt = JwtUtils.generateToken(user);
         return Result.success(jwt);
 
     }

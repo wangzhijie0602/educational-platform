@@ -1,6 +1,7 @@
 package club._8b1t.config;
 
 import club._8b1t.interceptor.JwtInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -12,10 +13,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @since 1.0
  */
 @Configuration
+@RequiredArgsConstructor
 public class JwtConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private JwtInterceptor jwtInterceptor;
+    private final JwtInterceptor jwtInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
