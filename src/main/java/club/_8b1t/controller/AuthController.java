@@ -4,6 +4,7 @@ import club._8b1t.pojo.Result;
 import club._8b1t.pojo.User;
 import club._8b1t.service.UserService;
 import club._8b1t.utils.JwtUtils;
+import club._8b1t.utils.PasswordEncoderUtils;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,13 +22,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserService userService;
 
     @PostMapping("/login")
     public Result login(@NotNull String username, @NotNull String password) {
         User user = userService.getUserByUsername(username);
-        if (user == null || !bCryptPasswordEncoder.matches(password, user.getPassword())) {
+        if (user == null || !PasswordEncoderUtils.matches(password, user.getPassword())) {
             return Result.error("用户名或密码错误");
         }
 
@@ -39,7 +39,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public Result register(String username, String password, String email) {
-        return userService.register(new User(username, bCryptPasswordEncoder.encode(password), email)) ? Result.success() : Result.error("注册失败!");
+        return userService.register(new User(username, PasswordEncoderUtils.encodePassword(password), email)) ? Result.success() : Result.error("注册失败!");
     }
 
 }

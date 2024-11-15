@@ -7,7 +7,6 @@ import club._8b1t.utils.JwtUtils;
 import club._8b1t.utils.ThreadLocalUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
