@@ -2,58 +2,61 @@ package club._8b1t.service.impl;
 
 import club._8b1t.mapper.UserMapper;
 import club._8b1t.pojo.User;
-import club._8b1t.pojo.UserInfoRequest;
 import club._8b1t.service.UserService;
+import club._8b1t.utils.JwtUtils;
+import club._8b1t.utils.ThreadLocalUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 /**
  * @author 8bit
+ * @version 1.0
+ * @since 1.0
  */
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserMapper userMapper;
+
+    private final UserMapper userMapper;
 
     @Override
-    public List<User> getAllUsers() {
-        return userMapper.getAllUsers();
-    }
-
-    @Override
-    public boolean addUser(User user) {
-//        判空,这三项不能为空
-        if (user.getUsername() == null ||
-                user.getPassword() == null ||
-                user.getEmail() == null
-        ) {
-            return false;
+    public List<User> getAllUsers(String role) {
+        if ("ADMIN".equals(role)) {
+            return userMapper.getAllUsers();
         }
-//        用户名或密码过长
-        if (user.getUsername().length() > 50 ||
-                user.getPassword().length() < 8 ||
-                user.getPassword().length() > 255
-        ) {
-            return false;
-        }
-        return userMapper.addUser(user);
+        return null;
     }
 
+    /**
+     * 注册用户
+     *
+     * @param user 用户的信息,包含username,password,email
+     * @return 注册是否成功
+     * */
     @Override
-    public User login(User user) {
-        return userMapper.getByUsernameAndPassword(user);
+    public boolean register(@Validated User user) {
+        return userMapper.getUserByUsername(user.getUsername()) == null
+//                真正注册的方法,前面全部为true才会执行
+                && userMapper.insertUser(user);
     }
 
+    /**
+     * 根据用户名查找用户
+     *
+     * @param username 用户名
+     * @return 如果用户存在,返回用户实体,不存在返回null
+     */
     @Override
-    public UserInfoRequest getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         if (username == null || username.isEmpty()) {
             return null;
         }
         return userMapper.getUserByUsername(username);
     }
-
 
 }

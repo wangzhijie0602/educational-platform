@@ -1,36 +1,50 @@
 package club._8b1t.controller;
 
-import club._8b1t.utils.ResultUtil;
+import club._8b1t.pojo.Result;
+import club._8b1t.pojo.User;
 import club._8b1t.service.UserService;
-import club._8b1t.utils.ThreadLocalUtil;
+import club._8b1t.utils.JwtUtils;
+import club._8b1t.utils.ThreadLocalUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
+ * 对用户各种操作的api接口实现
+ *
  * @author 8bit
+ * @version 1.0
+ * @since 1.0
  */
 @Slf4j
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("/users")
-    public ResultUtil getAllUsers() {
-        return ResultUtil.success(userService.getAllUsers());
+    public Result getAllUsers() {
+        String role = JwtUtils.extractRole(ThreadLocalUtils.getToken());
+//        只有admin才可以调用
+        List<User> users = userService.getAllUsers(role);
+        if (users == null) {
+            return Result.error("用户权限不足");
+        }
+        return Result.success(users);
     }
 
     @GetMapping("/user")
-    public ResultUtil getUser(String username) {
-        return ResultUtil.success(userService.getUserByUsername(username));
+    public Result getUser(String username) {
+        return Result.success(userService.getUserByUsername(username));
     }
 
     @GetMapping("/userinfo")
-    public ResultUtil userInfo() {
-        String username = ThreadLocalUtil.getToken();
-        return ResultUtil.success(userService.getUserByUsername(username));
+    public Result userInfo() {
+        String username = JwtUtils.extractUsername(ThreadLocalUtils.getToken());
+        return Result.success(userService.getUserByUsername(username));
     }
 }

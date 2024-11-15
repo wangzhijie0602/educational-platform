@@ -1,16 +1,19 @@
 package club._8b1t.exception;
 
-import club._8b1t.utils.ResultUtil;
+import club._8b1t.pojo.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 
 /**
  * 全局异常处理类
  *
  * @author 8bit
+ * @version 1.0
+ * @since 1.0
  */
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     /**
@@ -20,8 +23,8 @@ public class GlobalExceptionHandler {
      * @return 包含异常信息的 JSON 响应
      */
     @ExceptionHandler(Exception.class)
-    public ResultUtil handleException(Exception e) {
-        e.printStackTrace();
-        return ResultUtil.error("");
+    public Result handleException(Exception e) {
+        log.error(e.getMessage(), e);
+        return Result.error(e.getMessage());
     }
 }
