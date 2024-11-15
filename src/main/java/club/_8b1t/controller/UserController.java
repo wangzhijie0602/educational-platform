@@ -1,12 +1,16 @@
 package club._8b1t.controller;
 
 import club._8b1t.pojo.Result;
+import club._8b1t.pojo.User;
 import club._8b1t.service.UserService;
+import club._8b1t.utils.JwtUtils;
 import club._8b1t.utils.ThreadLocalUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 对用户各种操作的api接口实现
@@ -25,7 +29,13 @@ public class UserController {
 
     @GetMapping("/users")
     public Result getAllUsers() {
-        return Result.success(userService.getAllUsers());
+        String role = JwtUtils.extractRole(ThreadLocalUtils.getToken());
+//        只有admin才可以调用
+        List<User> users = userService.getAllUsers(role);
+        if (users == null) {
+            return Result.error("用户权限不足");
+        }
+        return Result.success(users);
     }
 
     @GetMapping("/user")
@@ -35,7 +45,7 @@ public class UserController {
 
     @GetMapping("/userinfo")
     public Result userInfo() {
-        String username = ThreadLocalUtils.getToken();
+        String username = JwtUtils.extractUsername(ThreadLocalUtils.getToken());
         return Result.success(userService.getUserByUsername(username));
     }
 }

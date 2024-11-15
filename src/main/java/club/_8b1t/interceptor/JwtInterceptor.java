@@ -2,6 +2,7 @@ package club._8b1t.interceptor;
 
 import club._8b1t.utils.JwtUtils;
 import club._8b1t.utils.ThreadLocalUtils;
+import io.jsonwebtoken.Jwt;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,8 @@ public class JwtInterceptor implements HandlerInterceptor {
         String token = request.getHeader("Authorization");
 
         try {
-            ThreadLocalUtils.setToken(JwtUtils.extractUsername(token));
+            JwtUtils.extractUsername(token);
+            ThreadLocalUtils.setToken(token);
             return true;
         }catch (Exception e){
             response.setStatus(401);

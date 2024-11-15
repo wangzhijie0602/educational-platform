@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface UserService {
 
-    List<User> getAllUsers();
+    List<User> getAllUsers(String role);
 
     boolean register(User user);
 

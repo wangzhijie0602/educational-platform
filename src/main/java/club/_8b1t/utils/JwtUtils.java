@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 
 import java.security.Key;
 import java.util.Date;
@@ -55,6 +56,11 @@ public class JwtUtils {
     // 提取用户名
     public static String extractUsername(String token) {
         return (String) extractAllClaims(token).get("username");
+    }
+
+    // 提取用户角色
+    public static String extractRole(String token) {
+        return (String) extractAllClaims(token).get("role");
     }
 
     // 提取过期时间

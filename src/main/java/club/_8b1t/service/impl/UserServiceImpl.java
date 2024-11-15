@@ -3,6 +3,8 @@ package club._8b1t.service.impl;
 import club._8b1t.mapper.UserMapper;
 import club._8b1t.pojo.User;
 import club._8b1t.service.UserService;
+import club._8b1t.utils.JwtUtils;
+import club._8b1t.utils.ThreadLocalUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +25,11 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public List<User> getAllUsers() {
-        return userMapper.getAllUsers();
+    public List<User> getAllUsers(String role) {
+        if ("ADMIN".equals(role)) {
+            return userMapper.getAllUsers();
+        }
+        return null;
     }
 
     /**
