@@ -1,7 +1,8 @@
 package club._8b1t.mapper;
 
-import club._8b1t.pojo.User;
-import org.apache.ibatis.annotations.Mapper;
+import club._8b1t.model.entity.User;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
 import java.util.List;
 
 /**
@@ -9,13 +10,8 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-@Mapper
-public interface UserMapper {
+public interface UserMapper extends BaseMapper<User> {
 
     List<User> getAllUsers();
-
-    boolean insertUser(User user);
-
-    User getUserByUsername(String username);
 
 }

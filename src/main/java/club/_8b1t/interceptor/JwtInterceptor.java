@@ -2,7 +2,6 @@ package club._8b1t.interceptor;
 
 import club._8b1t.utils.JwtUtils;
 import club._8b1t.utils.ThreadLocalUtils;
-import io.jsonwebtoken.Jwt;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;

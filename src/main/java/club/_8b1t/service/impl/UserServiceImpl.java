@@ -1,62 +1,80 @@
 package club._8b1t.service.impl;
 
 import club._8b1t.mapper.UserMapper;
-import club._8b1t.pojo.User;
+import club._8b1t.model.entity.User;
 import club._8b1t.service.UserService;
 import club._8b1t.utils.JwtUtils;
-import club._8b1t.utils.ThreadLocalUtils;
+import club._8b1t.utils.PasswordEncoderUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.github.linpeilie.Converter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 /**
+ * 用户实体的操作类
+ *
  * @author 8bit
- * @version 1.0
- * @since 1.0
  */
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
-
+    private static final String SALT = "educational-platform";
     private final UserMapper userMapper;
 
     @Override
-    public List<User> getAllUsers(String role) {
-        if ("ADMIN".equals(role)) {
-            return userMapper.getAllUsers();
+    public List<User> getAllUsers(String token) throws Exception {
+        String role = JwtUtils.extractRole(token);
+//        只有ADMIN才可以查看所有的用户
+        if (!"ADMIN".equals(role)) {
+            throw new Exception("权限不足");
         }
-        return null;
+
+        return userMapper.getAllUsers();
     }
 
-    /**
-     * 注册用户
-     *
-     * @param user 用户的信息,包含username,password,email
-     * @return 注册是否成功
-     * */
     @Override
-    public boolean register(@Validated User user) {
-        return userMapper.getUserByUsername(user.getUsername()) == null
-//                真正注册的方法,前面全部为true才会执行
-                && userMapper.insertUser(user);
+    public User getUserInfo(String token) {
+        String username = JwtUtils.extractUsername(token);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<User>().eq("username", username);
+        return userMapper.selectOne(queryWrapper);
     }
 
-    /**
-     * 根据用户名查找用户
-     *
-     * @param username 用户名
-     * @return 如果用户存在,返回用户实体,不存在返回null
-     */
     @Override
-    public User getUserByUsername(String username) {
-        if (username == null || username.isEmpty()) {
-            return null;
+    public User userLogin(User user) throws Exception {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper
+                .eq("username", user.getUsername())
+                .or()
+                .eq("email", user.getEmail());
+        User res = userMapper.selectOne(queryWrapper);
+
+        if (res == null) {
+            throw new Exception("用户名或邮箱不存在");
         }
-        return userMapper.getUserByUsername(username);
+        if (!PasswordEncoderUtils.matches(user.getPassword() + SALT, res.getPassword())) {
+            throw new Exception("密码错误");
+        }
+
+        return res;
+    }
+
+    @Override
+    public long userRegister(User user) throws Exception {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.or()
+                .eq("username", user.getUsername())
+                .eq("email", user.getEmail());
+
+        if (userMapper.selectOne(queryWrapper) != null) {
+            throw new Exception("用户名或邮箱已经存在");
+        }
+        user.setPassword(PasswordEncoderUtils.encodePassword(user.getPassword() + SALT));
+        userMapper.insert(user);
+        return user.getId();
     }
 
 }

@@ -1,13 +1,13 @@
-package club._8b1t.pojo;
+package club._8b1t.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * 统一返回类型
+ *
  * @author 8bit
- * @version 1.0
- * @since 1.0
  */
 @Data
 @NoArgsConstructor
