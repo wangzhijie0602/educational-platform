@@ -1,10 +1,11 @@
 package club._8b1t.controller;
 
-import club._8b1t.pojo.Result;
-import club._8b1t.pojo.User;
+import club._8b1t.model.entity.User;
+import club._8b1t.model.response.Result;
+import club._8b1t.model.response.UserInfoResponse;
 import club._8b1t.service.UserService;
-import club._8b1t.utils.JwtUtils;
 import club._8b1t.utils.ThreadLocalUtils;
+import io.github.linpeilie.Converter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -25,26 +26,26 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final Converter converter;
 
     @GetMapping("/users")
-    public Result getAllUsers() {
-        String role = JwtUtils.extractRole(ThreadLocalUtils.getToken());
-//        只有admin才可以调用
-        List<User> users = userService.getAllUsers(role);
-        if (users == null) {
+    public Result getAllUsers() throws Exception {
+        String token = ThreadLocalUtils.getToken();
+        List<User> userList = userService.getAllUsers(token);
+        List<UserInfoResponse> userInfoResponseList = converter.convert(userList, UserInfoResponse.class);
+
+        if (userList.isEmpty()) {
             return Result.error("用户权限不足");
         }
-        return Result.success(users);
-    }
 
-    @GetMapping("/user")
-    public Result getUser(String username) {
-        return Result.success(userService.getUserByUsername(username));
+        return Result.success(userInfoResponseList);
     }
 
     @GetMapping("/userinfo")
     public Result userInfo() {
-        String username = JwtUtils.extractUsername(ThreadLocalUtils.getToken());
-        return Result.success(userService.getUserByUsername(username));
+        String token = ThreadLocalUtils.getToken();
+        User user = userService.getUserInfo(token);
+        UserInfoResponse userInfoResponse = converter.convert(user, UserInfoResponse.class);
+        return Result.success(userInfoResponse);
     }
 }

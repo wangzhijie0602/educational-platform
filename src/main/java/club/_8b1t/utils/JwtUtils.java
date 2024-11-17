@@ -1,11 +1,13 @@
 package club._8b1t.utils;
 
-import club._8b1t.pojo.User;
+import club._8b1t.model.entity.User;
+import club._8b1t.model.enums.Role;
+import club._8b1t.model.enums.Status;
+import club._8b1t.model.response.UserInfoResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import lombok.extern.slf4j.Slf4j;
 
 import java.security.Key;
 import java.util.Date;
@@ -26,14 +28,15 @@ public class JwtUtils {
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     // 生成JWT令牌
-    public static String generateToken(User user) {
+    public static String generateToken(UserInfoResponse userInfoResponse) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("id", user.getId());
-        claims.put("username", user.getUsername());
-        claims.put("email", user.getEmail());
-        claims.put("name", user.getName());
-        claims.put("role", user.getRole().name());
-        claims.put("status", user.getStatus().name());
+        claims.put("id", userInfoResponse.getId());
+        claims.put("username", userInfoResponse.getUsername());
+        claims.put("email", userInfoResponse.getEmail());
+        claims.put("name", userInfoResponse.getName());
+        claims.put("role", userInfoResponse.getRole().name());
+        claims.put("status", userInfoResponse.getStatus().name());
+        claims.put("createTime", userInfoResponse.getCreatedAt());
         return createToken(claims);
     }
 
@@ -96,8 +99,8 @@ public class JwtUtils {
         user.setUsername((String) claims.get("username"));
         user.setEmail((String) claims.get("email"));
         user.setName((String) claims.get("name"));
-        user.setRole(User.Role.valueOf((String) claims.get("role")));
-        user.setStatus(User.Status.valueOf((String) claims.get("status")));
+        user.setRole(Role.valueOf((String) claims.get("role")));
+        user.setStatus(Status.valueOf((String) claims.get("status")));
         return user;
     }
 }

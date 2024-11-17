@@ -1,19 +1,19 @@
 package club._8b1t.config;
 
+import io.github.linpeilie.Converter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
- *
+ * 自动注入Mapstruct Plus
  *
  * @author 8bit
  */
 @Configuration
-public class SecurityConfig {
+public class MapstructPlusConfig {
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public Converter converter() {
+        return new Converter();
     }
 }

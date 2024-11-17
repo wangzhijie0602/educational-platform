@@ -1,6 +1,6 @@
 package club._8b1t.exception;
 
-import club._8b1t.pojo.Result;
+import club._8b1t.model.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
