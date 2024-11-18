@@ -7,9 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class EducationalPlatformApplicationTests {
 
-	private static final String SALT = "educational-platform";
-
-	@Test
+    @Test
 	void contextLoads() {
 	}
 

@@ -10,7 +10,6 @@ import club._8b1t.service.UserService;
 import club._8b1t.utils.JwtUtils;
 import io.github.linpeilie.Converter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
