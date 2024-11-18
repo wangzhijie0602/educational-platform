@@ -7,16 +7,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class EducationalPlatformApplicationTests {
 
-	private static final String SALT = "educational-platform";
-
-	@Test
+    @Test
 	void contextLoads() {
 	}
 
 	@Test
 	void createPassword(){
-		String password = "123456";
-		password += SALT;
+		String password = "a12345678";
 		System.out.println(PasswordEncoderUtils.encodePassword(password));
 	}
 

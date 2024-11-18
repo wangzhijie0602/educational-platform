@@ -21,7 +21,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         String token = request.getHeader("Authorization");
 
         try {
-            JwtUtils.extractUsername(token);
+            JwtUtils.extractUserId(token);
             ThreadLocalUtils.setToken(token);
             return true;
         }catch (Exception e){

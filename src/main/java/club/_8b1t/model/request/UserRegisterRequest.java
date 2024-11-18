@@ -26,10 +26,9 @@ public class UserRegisterRequest {
     @Pattern(regexp = "^[a-zA-Z0-9_-]{3,50}$", message = "用户名不合法")
     private String username;
 
-//    密码长度在8~255之间
-//    密码必须包含至少一个大写字母、一个小写字母、一个数字和一个特殊字符
+//    密码正则（密码格式应为8-18位数字、字母、符号的任意两种组合
     @NotBlank
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,255}$", message = "密码不合法")
+    @Pattern(regexp = "^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\\u4E00-\\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,255}$", message = "密码不合法")
     private String password;
 
     @NotBlank
