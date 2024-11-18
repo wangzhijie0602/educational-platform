@@ -15,8 +15,7 @@ class EducationalPlatformApplicationTests {
 
 	@Test
 	void createPassword(){
-		String password = "123456";
-		password += SALT;
+		String password = "a12345678";
 		System.out.println(PasswordEncoderUtils.encodePassword(password));
 	}
 

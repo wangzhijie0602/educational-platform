@@ -6,7 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 /**
  * @author 8bit
@@ -19,7 +20,9 @@ public class UserInfoResponse {
     private Long id;
     private String username;
     private String email;
-    private String name;
+    private String phone;
+    private String nickname;
+    private String avatar;
     private Role role;
     private Status status;
     private Date createdAt;

@@ -4,6 +4,7 @@ import club._8b1t.model.entity.User;
 import club._8b1t.model.response.Result;
 import club._8b1t.model.response.UserInfoResponse;
 import club._8b1t.service.UserService;
+import club._8b1t.utils.JwtUtils;
 import club._8b1t.utils.ThreadLocalUtils;
 import io.github.linpeilie.Converter;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,8 @@ public class UserController {
     @GetMapping("/users")
     public Result getAllUsers() throws Exception {
         String token = ThreadLocalUtils.getToken();
-        List<User> userList = userService.getAllUsers(token);
+        long id = JwtUtils.extractUserId(token);
+        List<User> userList = userService.getAllUsers(id);
         List<UserInfoResponse> userInfoResponseList = converter.convert(userList, UserInfoResponse.class);
 
         if (userList.isEmpty()) {
@@ -42,9 +44,10 @@ public class UserController {
     }
 
     @GetMapping("/userinfo")
-    public Result userInfo() {
+    public Result userInfo() throws Exception {
         String token = ThreadLocalUtils.getToken();
-        User user = userService.getUserInfo(token);
+        long id = JwtUtils.extractUserId(token);
+        User user = userService.getUserInfo(id);
         UserInfoResponse userInfoResponse = converter.convert(user, UserInfoResponse.class);
         return Result.success(userInfoResponse);
     }

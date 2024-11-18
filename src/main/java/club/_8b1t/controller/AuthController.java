@@ -5,12 +5,16 @@ import club._8b1t.model.request.UserRegisterRequest;
 import club._8b1t.model.response.Result;
 import club._8b1t.model.request.UserLoginRequest;
 import club._8b1t.model.response.UserInfoResponse;
+import club._8b1t.model.response.UserLoginResponse;
 import club._8b1t.service.UserService;
 import club._8b1t.utils.JwtUtils;
 import io.github.linpeilie.Converter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 /**
  * 用户登录和注册的接口实现
@@ -34,9 +38,13 @@ public class AuthController {
         UserInfoResponse userInfoResponse = converter.convert(userInfo, UserInfoResponse.class);
 
 //        用户登录成功,生成并下发令牌
-        String jwt = JwtUtils.generateToken(userInfoResponse);
+        Long userId = userInfoResponse.getId();
+        String accessToken = JwtUtils.generateAccessToken(userId);
+        String refreshToken = JwtUtils.generateRefreshToken(userId);
+        Date expires = JwtUtils.extractExpiration(accessToken);
+        UserLoginResponse userLoginResponse = new UserLoginResponse(userInfoResponse, accessToken, refreshToken, expires);
 
-        return Result.success(jwt);
+        return Result.success(userLoginResponse);
 
     }
 

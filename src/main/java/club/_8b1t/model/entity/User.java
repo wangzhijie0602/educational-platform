@@ -9,7 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 /**
  * 用户表实体类
@@ -26,7 +27,9 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private String name;
+    private String phone;
+    private String nickname;
+    private String avatar;
     private Role role;
     private Status status;
 

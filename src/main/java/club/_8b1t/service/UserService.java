@@ -15,18 +15,18 @@ public interface UserService extends IService<User> {
     /**
      * 查看所有用户信息
      *
-     * @param token 用户的令牌
+     * @param id 用户的id
      * @return 所有用户信息的列表
      * */
-    List<User> getAllUsers(String token) throws Exception;
+    List<User> getAllUsers(long id) throws Exception;
 
     /**
      * 查看当前用户信息
      *
-     * @param token 用户的令牌
+     * @param id 用户的id
      * @return 用户的信息
      * */
-    User getUserInfo(String token);
+    User getUserInfo(long id) throws Exception;
 
     /**
      * 用户登录

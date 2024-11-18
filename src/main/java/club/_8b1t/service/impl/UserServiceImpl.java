@@ -2,12 +2,11 @@ package club._8b1t.service.impl;
 
 import club._8b1t.mapper.UserMapper;
 import club._8b1t.model.entity.User;
+import club._8b1t.model.enums.Role;
 import club._8b1t.service.UserService;
-import club._8b1t.utils.JwtUtils;
 import club._8b1t.utils.PasswordEncoderUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.github.linpeilie.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +21,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
-    private static final String SALT = "educational-platform";
     private final UserMapper userMapper;
 
     @Override
-    public List<User> getAllUsers(String token) throws Exception {
-        String role = JwtUtils.extractRole(token);
+    public List<User> getAllUsers(long id) throws Exception {
+        User user = userMapper.selectById(id);
+        if (user == null) {
+            throw new Exception("用户不存在");
+        }
+        Role role = user.getRole();
 //        只有ADMIN才可以查看所有的用户
-        if (!"ADMIN".equals(role)) {
+        if (!Role.ADMIN.equals(role)) {
             throw new Exception("权限不足");
         }
 
@@ -37,10 +39,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public User getUserInfo(String token) {
-        String username = JwtUtils.extractUsername(token);
-        QueryWrapper<User> queryWrapper = new QueryWrapper<User>().eq("username", username);
-        return userMapper.selectOne(queryWrapper);
+    public User getUserInfo(long id) throws Exception {
+        User user = userMapper.selectById(id);
+        if (user == null) {
+            throw new Exception("用户不存在");
+        }
+        return user;
     }
 
     @Override
@@ -55,7 +59,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (res == null) {
             throw new Exception("用户名或邮箱不存在");
         }
-        if (!PasswordEncoderUtils.matches(user.getPassword() + SALT, res.getPassword())) {
+        if (!PasswordEncoderUtils.matches(user.getPassword(), res.getPassword())) {
             throw new Exception("密码错误");
         }
 
@@ -72,7 +76,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (userMapper.selectOne(queryWrapper) != null) {
             throw new Exception("用户名或邮箱已经存在");
         }
-        user.setPassword(PasswordEncoderUtils.encodePassword(user.getPassword() + SALT));
+        user.setPassword(PasswordEncoderUtils.encodePassword(user.getPassword()));
         userMapper.insert(user);
         return user.getId();
     }
