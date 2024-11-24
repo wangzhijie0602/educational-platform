@@ -2,7 +2,7 @@ package club._8b1t.model.request;
 
 import club._8b1t.model.entity.User;
 import io.github.linpeilie.annotations.AutoMapper;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,9 +19,8 @@ import lombok.NoArgsConstructor;
 public class UserLoginRequest {
 
     private String username;
-
-    @NotNull(message = "密码不能为空,请输入密码")
-    private String password;
     private String email;
 
+    @NotBlank(message = "密码不能为空,请输入密码")
+    private String password;
 }

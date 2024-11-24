@@ -8,6 +8,7 @@ import club._8b1t.model.response.UserInfoResponse;
 import club._8b1t.model.response.UserLoginResponse;
 import club._8b1t.service.UserService;
 import club._8b1t.utils.JwtUtils;
+import club._8b1t.utils.ThreadLocalUtils;
 import io.github.linpeilie.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -39,9 +40,7 @@ public class AuthController {
 //        用户登录成功,生成并下发令牌
         Long userId = userInfoResponse.getId();
         String accessToken = JwtUtils.generateAccessToken(userId);
-        String refreshToken = JwtUtils.generateRefreshToken(userId);
-        Date expires = JwtUtils.extractExpiration(accessToken);
-        UserLoginResponse userLoginResponse = new UserLoginResponse(userInfoResponse, accessToken, refreshToken, expires);
+        UserLoginResponse userLoginResponse = new UserLoginResponse(accessToken);
 
         return Result.success(userLoginResponse);
 
@@ -53,6 +52,15 @@ public class AuthController {
         Long registerId = userService.userRegister(user);
 
         return Result.success(registerId);
+    }
+
+    @GetMapping("/current")
+    public Result userInfo() throws Exception {
+        String token = ThreadLocalUtils.getToken();
+        long id = JwtUtils.extractUserId(token);
+        User user = userService.getUserInfo(id);
+        UserInfoResponse userInfoResponse = converter.convert(user, UserInfoResponse.class);
+        return Result.success(userInfoResponse);
     }
 
 }
