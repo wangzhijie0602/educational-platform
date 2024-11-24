@@ -1,7 +1,7 @@
 package club._8b1t.interceptor;
 
-import club._8b1t.utils.JwtUtils;
-import club._8b1t.utils.ThreadLocalUtils;
+import club._8b1t.utils.JwtUtil;
+import club._8b1t.utils.ThreadLocalUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -34,8 +34,8 @@ public class JwtInterceptor implements HandlerInterceptor {
         token = token.substring(7);
 
         try {
-            JwtUtils.extractUserId(token);
-            ThreadLocalUtils.setToken(token);
+            JwtUtil.extractUserId(token);
+            ThreadLocalUtil.setToken(token);
             return true;
         }catch (Exception e){
             response.setStatus(401);
@@ -46,6 +46,6 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        ThreadLocalUtils.clearToken();
+        ThreadLocalUtil.clearToken();
     }
 }

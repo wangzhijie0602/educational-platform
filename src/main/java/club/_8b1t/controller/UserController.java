@@ -1,11 +1,13 @@
 package club._8b1t.controller;
 
 import club._8b1t.model.entity.User;
-import club._8b1t.model.response.Result;
+import club._8b1t.model.request.UserManagerRequest;
+import club._8b1t.model.response.BaseResult;
+import club._8b1t.utils.ResultUtil;
 import club._8b1t.model.response.UserInfoResponse;
 import club._8b1t.service.UserService;
-import club._8b1t.utils.JwtUtils;
-import club._8b1t.utils.ThreadLocalUtils;
+import club._8b1t.utils.JwtUtil;
+import club._8b1t.utils.ThreadLocalUtil;
 import io.github.linpeilie.Converter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,16 +32,35 @@ public class UserController {
     private final Converter converter;
 
     @GetMapping("/user/all")
-    public Result getAllUsers() throws Exception {
-        String token = ThreadLocalUtils.getToken();
-        long id = JwtUtils.extractUserId(token);
+    public BaseResult getAllUsers() throws Exception {
+        String token = ThreadLocalUtil.getToken();
+        long id = JwtUtil.extractUserId(token);
         List<User> userList = userService.getAllUsers(id);
         List<UserInfoResponse> userInfoResponseList = converter.convert(userList, UserInfoResponse.class);
 
         if (userList.isEmpty()) {
-            return Result.error("用户权限不足");
+            return ResultUtil.error("用户权限不足");
         }
 
-        return Result.success(userInfoResponseList);
+        return ResultUtil.success(userInfoResponseList);
+    }
+
+    @GetMapping("/current")
+    public BaseResult userInfo() throws Exception {
+        String token = ThreadLocalUtil.getToken();
+        long id = JwtUtil.extractUserId(token);
+        User user = userService.getUserInfo(id);
+        UserInfoResponse userInfoResponse = converter.convert(user, UserInfoResponse.class);
+        return ResultUtil.success(userInfoResponse);
+    }
+
+    @PostMapping("/user/update")
+    public BaseResult modifyUser(@RequestBody UserManagerRequest userManagerRequest) throws Exception {
+        User user = converter.convert(userManagerRequest, User.class);
+        System.out.println(userManagerRequest.toString());
+        System.out.println(user.toString());
+        boolean b = userService.userUpdate(user);
+
+        return b ? ResultUtil.success() : ResultUtil.error("更新失败");
     }
 }

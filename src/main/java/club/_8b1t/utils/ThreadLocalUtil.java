@@ -5,7 +5,7 @@ package club._8b1t.utils;
  * @version 1.0
  * @since 1.0
  */
-public class ThreadLocalUtils {
+public class ThreadLocalUtil {
 
     private static final ThreadLocal<String> THREAD_LOCAL = new ThreadLocal<>();
 

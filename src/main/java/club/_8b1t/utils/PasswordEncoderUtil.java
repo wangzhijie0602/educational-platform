@@ -9,7 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * @version 1.0
  * @since 1.0
  */
-public class PasswordEncoderUtils {
+public class PasswordEncoderUtil {
 
     private static final BCryptPasswordEncoder ENCODER = new BCryptPasswordEncoder();
     private static final String SALT = "educational-platform";

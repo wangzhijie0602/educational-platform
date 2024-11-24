@@ -1,6 +1,6 @@
 package club._8b1t;
 
-import club._8b1t.utils.PasswordEncoderUtils;
+import club._8b1t.utils.PasswordEncoderUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -14,7 +14,7 @@ class EducationalPlatformApplicationTests {
 	@Test
 	void createPassword(){
 		String password = "a12345678";
-		System.out.println(PasswordEncoderUtils.encodePassword(password));
+		System.out.println(PasswordEncoderUtil.encodePassword(password));
 	}
 
 }

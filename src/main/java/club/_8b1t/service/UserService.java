@@ -43,4 +43,6 @@ public interface UserService extends IService<User> {
      * @return 注册是否成功
      * */
     long userRegister(User user) throws Exception;
+
+    boolean userUpdate(User user) throws Exception;
 }
