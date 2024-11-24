@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
-
 /**
  * 登录接口的返回类
  *
@@ -16,8 +13,5 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserLoginResponse {
-    private UserInfoResponse userInfo;
     private String accessToken;
-    private String refreshToken;
-    private Date expires;
 }

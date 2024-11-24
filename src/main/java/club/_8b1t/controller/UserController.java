@@ -29,7 +29,7 @@ public class UserController {
     private final UserService userService;
     private final Converter converter;
 
-    @GetMapping("/users")
+    @GetMapping("/user/all")
     public Result getAllUsers() throws Exception {
         String token = ThreadLocalUtils.getToken();
         long id = JwtUtils.extractUserId(token);
@@ -41,14 +41,5 @@ public class UserController {
         }
 
         return Result.success(userInfoResponseList);
-    }
-
-    @GetMapping("/userinfo")
-    public Result userInfo() throws Exception {
-        String token = ThreadLocalUtils.getToken();
-        long id = JwtUtils.extractUserId(token);
-        User user = userService.getUserInfo(id);
-        UserInfoResponse userInfoResponse = converter.convert(user, UserInfoResponse.class);
-        return Result.success(userInfoResponse);
     }
 }
